@@ -44,7 +44,7 @@ jobs:
           FIX: $( if [[ $COMMIT_MESSAGE == *"hotfix/"* || $COMMIT_MESSAGE == *"fix"* ]]; then echo 1; fi )
         if: ${{ !env.MERGE }} == 1 && ${{ !env.FIX }} == 1
         run: |
-          echo "it's a hotfix"; if [[ $COMMIT_MESSAGE == *"hotfix/"* || $COMMIT_MESSAGE == *"fix"* ]]; then echo 1; fi ; echo $FIX
+          echo "it's a hotfix"; echo $MERGE; echo $FIX
 
 
       # Runs a single command using the runners shell
