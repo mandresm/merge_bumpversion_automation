@@ -40,7 +40,7 @@ jobs:
         env:
           MERGE_MESSAGE: "Merge pull request "
           COMMIT_MESSAGE: ${{ github.event.commits[0].message }}
-          MERGE: $( if [[ $COMMIT_MESSAGE == *$MERGE_MESSAGE* ]]; then echo 1; fi )
+          MERGE: ${{ $( if [[ $COMMIT_MESSAGE == *$MERGE_MESSAGE* ]]; then echo 1; fi ) }}
         if: $MERGE == 1
         run: |
           echo $COMMIT_MESSAGE; echo $MERGE
