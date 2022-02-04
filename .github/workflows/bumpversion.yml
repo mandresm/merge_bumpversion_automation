@@ -37,7 +37,7 @@ jobs:
       #    tags: true
           
       - name: print base branch
-        if: ${{ contains(github.event.commits[0].message, 'Merge') }} #&& contains(github.event.commits[0].message, 'fix/')
+        #if: ${{ contains(github.event.commits[0].message, 'Merge') }} #&& contains(github.event.commits[0].message, 'fix/')
         run: |
           echo "${{ github.event.commits[0].message }}"
 
