@@ -25,16 +25,16 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
-      - name: Bump version and push tag
-        uses: jaumann/github-bumpversion-action@v0.0.7
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #- name: Bump version and push tag
+      #  uses: jaumann/github-bumpversion-action@v0.0.7
+      #  env:
+      #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           
-      - name: Push changes
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          tags: true
+      #- name: Push changes
+      #  uses: ad-m/github-push-action@master
+      #  with:
+      #    github_token: ${{ secrets.GITHUB_TOKEN }}
+      #    tags: true
           
       - name: print base branch
         env:
@@ -44,7 +44,7 @@ jobs:
           FIX: $( if [[ $COMMIT_MESSAGE == *"hotfix/"* || $COMMIT_MESSAGE == *"fix"* ]]; then echo 1; fi )
         if: ${{ !env.MERGE }} == 1 && ${{ !env.FIX }} == 1
         run: |
-          echo "it's a hotfix"; if [[ $COMMIT_MESSAGE == *"hotfix/"* || $COMMIT_MESSAGE == *"fix"* ]]; then echo 1; fi ); echo $FIX
+          echo "it's a hotfix"; if [[ $COMMIT_MESSAGE == *"hotfix/"* || $COMMIT_MESSAGE == *"fix"* ]]; then echo 1; fi ; echo $FIX
 
 
       # Runs a single command using the runners shell
