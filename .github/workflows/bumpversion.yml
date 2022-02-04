@@ -37,13 +37,13 @@ jobs:
           tags: true
           
       - name: print base branch
-        run: |
-          echo $COMMIT_MESSAGE; echo $MERGE
-        if: $MERGE == 1
         env:
           MERGE_MESSAGE: "Merge pull request "
           COMMIT_MESSAGE: ${{ github.event.commits[0].message }}
           MERGE: $( if [[ $COMMIT_MESSAGE == *$MERGE_MESSAGE* ]]; then echo 1; fi )
+        if: $MERGE == 1
+        run: |
+          echo $COMMIT_MESSAGE; echo $MERGE
 
 
       # Runs a single command using the runners shell
