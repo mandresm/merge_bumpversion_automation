@@ -40,7 +40,7 @@ jobs:
         env:
           MERGE_MESSAGE: 'Merge pull request '
           COMMIT_MESSAGE: ${{ github.event.commits[0].message }}
-        if: contains(${{ github.event.commits[0].message }}', 'Merge pull request ')
+        if: contains(github.event.commits[0].message, 'Merge pull request ')
         #if: contains(env.COMMIT_MESSAGE, env.MERGE_MESSAGE) && contains(env.COMMIT_MESSAGE, 'fix/')
         run: |
           echo "it's a hotfix"; echo $MERGE; echo $FIX
