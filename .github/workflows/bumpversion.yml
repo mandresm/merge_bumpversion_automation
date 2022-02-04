@@ -39,7 +39,7 @@ jobs:
       - name: print base branch
         #if: ${{ contains(github.event.commits[0].message, 'Merge') }} #&& contains(github.event.commits[0].message, 'fix/')
         run: |
-          echo "${{ github.event.commits[-1].message }}"
+          echo "${{ github.event.commits[1].message }}"
 
 
       # Runs a single command using the runners shell
