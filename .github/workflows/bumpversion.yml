@@ -38,9 +38,7 @@ jobs:
           
       - name: print base branch
         run: |
-          echo "Pull request's base branch is: ${{github.base_ref}}"
-        env:
-          BASE_BRANCH: ${{ github.base_ref }}
+          echo "${{ github.event.commits[0].message }}"
         #if: github.event_name == 'pull_request'
 
 
