@@ -37,11 +37,7 @@ jobs:
       #    tags: true
           
       - name: print base branch
-        env:
-          MERGE_MESSAGE: 'Merge pull request '
-          COMMIT_MESSAGE: ${{ github.event.commits[0].message }}
-        if: contains(github.event.commits[0].message, 'Merge pull request ')
-        #if: contains(env.COMMIT_MESSAGE, env.MERGE_MESSAGE) && contains(env.COMMIT_MESSAGE, 'fix/')
+        if: contains(github.event.commits[0].message, 'Merge pull request ') && contains(github.event.commits[0].message, 'fix/')
         run: |
           echo "it's a hotfix"; echo $MERGE; echo $FIX
 
