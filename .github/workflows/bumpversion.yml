@@ -43,7 +43,7 @@ jobs:
         env:
           MERGE_MESSAGE: "Merge pull request "
           COMMIT_MESSAGE: ${{ github.event.commits[0].message }}
-          MERGE: "[[ $COMMIT_MESSAGE == *$MERGE_MESSAGE* ]]"
+          MERGE: [[ $COMMIT_MESSAGE == *$MERGE_MESSAGE* ]]
 
 
       # Runs a single command using the runners shell
