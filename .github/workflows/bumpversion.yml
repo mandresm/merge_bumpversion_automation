@@ -37,10 +37,31 @@ jobs:
       #    tags: true
           
       - name: print base branch
-        if: ${{ contains(github.event.head_commit.message, 'erge') && contains(github.event.head_commit.message, 'fix/') }}
+        if: ${{ contains(github.event.head_commit.message, 'erge') && 
+          contains(github.event.head_commit.message, 'fix/') &&
+          !contains(github.event.head_commit.message, 'feat/') &&
+          !contains(github.event.head_commit.message, 'feature/')
+          }}
         run: |
-          echo "${{ github.event.head_commit.message }}"
+          echo "hotfix"
 
+      - name: print base branch
+        if: ${{ contains(github.event.head_commit.message, 'erge') && (
+          contains(github.event.head_commit.message, 'feat/') ||
+          contains(github.event.head_commit.message, 'feature/') ) &&
+          !contains(github.event.head_commit.message, 'fix/')
+          }}
+        run: |
+          echo "feature"
+          
+      - name: print base branch
+        if: ${{ contains(github.event.head_commit.message, 'erge') &&
+          !contains(github.event.head_commit.message, 'feat/') &&
+          !contains(github.event.head_commit.message, 'feature/') &&
+          !contains(github.event.head_commit.message, 'fix/')
+          }}
+        run: |
+          echo "I don't know"      
 
       # Runs a single command using the runners shell
       #- name: Run a one-line script
