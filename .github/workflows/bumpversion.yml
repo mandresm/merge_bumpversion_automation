@@ -1,0 +1,77 @@
+# This is a basic workflow to help you get started with Actions
+
+name: bumpversion
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  push:
+    branches: [ main ]
+  #pull_request:
+  #  branches: [ main ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+          
+      - name: bump patch
+        if: ${{ contains(github.event.head_commit.message, 'Merge pull request') && 
+          contains(github.event.head_commit.message, 'fix/') &&
+          !contains(github.event.head_commit.message, 'feat/') &&
+          !contains(github.event.head_commit.message, 'feature/')
+          }}
+        uses: jaumann/github-bumpversion-action@v0.0.7
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEFAULT_BUMP: patch
+
+      - name: bump feature
+        if: ${{ contains(github.event.head_commit.message, 'Merge pull request') && (
+          contains(github.event.head_commit.message, 'feat/') ||
+          contains(github.event.head_commit.message, 'feature/') ) &&
+          !contains(github.event.head_commit.message, 'fix/')
+          }}
+        uses: jaumann/github-bumpversion-action@v0.0.7
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEFAULT_BUMP: minor
+          
+      - name: bump default
+        if: ${{ contains(github.event.head_commit.message, 'Merge pull request') &&
+          !contains(github.event.head_commit.message, 'feat/') &&
+          !contains(github.event.head_commit.message, 'feature/') &&
+          !contains(github.event.head_commit.message, 'fix/')
+          }}
+        uses: jaumann/github-bumpversion-action@v0.0.7
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  
+
+      - name: push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          tags: true
+          
+      - name: merge into develop
+        if: ${{ contains(github.event.head_commit.message, 'Merge pull request') }}
+        run: |
+          git checkout develop;
+          git pull;
+          git merge origin/main
+      
+      - name: push merge into develop
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          tags: true
