@@ -66,9 +66,13 @@ jobs:
       - name: merge into develop
         if: ${{ contains(github.event.head_commit.message, 'Merge pull request') }}
         run: |
+          git config --global user.email "miguel.andres-martinez@awi.de";
+          git config --global user.name "Luna, the cat-bot"
+          git checkout main;
+          git pull;
           git checkout develop;
           git pull;
-          git merge origin/main
+          git merge origin/main --allow-unrelated-histories
       
       - name: push merge into develop
         uses: ad-m/github-push-action@master
