@@ -79,7 +79,7 @@ jobs:
           git checkout "main";
           git status;
           git checkout "develop";
-          git merge "main" --no-edit
+          git merge "main"
       
       - name: push merge into develop
         uses: ad-m/github-push-action@master
