@@ -74,10 +74,5 @@ jobs:
           git checkout main;
           git pull;
           git checkout develop;
-          git merge origin/main
-      
-      - name: push merge into develop
-        uses: ad-m/github-push-action@develop
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          tags: true
+          git merge origin/main;
+          git push
