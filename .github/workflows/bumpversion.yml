@@ -72,14 +72,14 @@ jobs:
 
       - name: perform merge
         run: |
-          git config --global user.email "${GITHUB_ACTOR}"
-          git config --global user.name "${GITHUB_ACTOR}@users.noreply.github.com"
-          git status
-          git pull
-          git checkout "$DEFAULT_BRANCH"
-          git status
-          git checkout "develop"
-          git merge "origin/main" --no-edit
+          git config --global user.email "${GITHUB_ACTOR}";
+          git config --global user.name "${GITHUB_ACTOR}@users.noreply.github.com";
+          git status;
+          git pull;
+          git checkout "main";
+          git status;
+          git checkout "develop";
+          git merge "main" --no-edit
       
       - name: push merge into develop
         uses: ad-m/github-push-action@master
