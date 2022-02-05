@@ -57,7 +57,20 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  
 
-      - name: Push changes
+      - name: push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          tags: true
+          
+      - name: merge into develop
+        if: ${{ contains(github.event.head_commit.message, 'Merge pull request') }}
+        run: |
+          git checkout develop;
+          git pull;
+          git merge main
+      
+      - name: push merge into develop
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
