@@ -68,7 +68,7 @@ jobs:
         run: |
           git checkout develop;
           git pull;
-          git merge origin/main
+          git merge origin/main --allow-unrelated-histories
       
       - name: push merge into develop
         uses: ad-m/github-push-action@master
