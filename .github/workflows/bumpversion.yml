@@ -37,7 +37,7 @@ jobs:
       #    tags: true
           
       - name: print base branch
-        if: ${{ contains(github.event.head_commit.message, 'erge') && 
+        if: ${{ contains(github.event.head_commit.message, 'Merge pull request') && 
           contains(github.event.head_commit.message, 'fix/') &&
           !contains(github.event.head_commit.message, 'feat/') &&
           !contains(github.event.head_commit.message, 'feature/')
@@ -46,7 +46,7 @@ jobs:
           echo "hotfix"
 
       - name: print base branch
-        if: ${{ contains(github.event.head_commit.message, 'erge') && (
+        if: ${{ contains(github.event.head_commit.message, 'Merge pull request') && (
           contains(github.event.head_commit.message, 'feat/') ||
           contains(github.event.head_commit.message, 'feature/') ) &&
           !contains(github.event.head_commit.message, 'fix/')
@@ -55,7 +55,7 @@ jobs:
           echo "feature"
           
       - name: print base branch
-        if: ${{ contains(github.event.head_commit.message, 'erge') &&
+        if: ${{ contains(github.event.head_commit.message, 'Merge pull request') &&
           !contains(github.event.head_commit.message, 'feat/') &&
           !contains(github.event.head_commit.message, 'feature/') &&
           !contains(github.event.head_commit.message, 'fix/')
