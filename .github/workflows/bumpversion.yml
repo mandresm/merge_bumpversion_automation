@@ -24,44 +24,44 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-
-      #- name: Bump version and push tag
-      #  uses: jaumann/github-bumpversion-action@v0.0.7
-      #  env:
-      #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           
-      #- name: Push changes
-      #  uses: ad-m/github-push-action@master
-      #  with:
-      #    github_token: ${{ secrets.GITHUB_TOKEN }}
-      #    tags: true
-          
-      - name: print base branch
+      - name: bump patch
         if: ${{ contains(github.event.head_commit.message, 'Merge pull request') && 
           contains(github.event.head_commit.message, 'fix/') &&
           !contains(github.event.head_commit.message, 'feat/') &&
           !contains(github.event.head_commit.message, 'feature/')
           }}
-        run: |
-          echo "hotfix"
+        uses: jaumann/github-bumpversion-action@v0.0.7
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEFAULT_BUMP: patch
 
-      - name: print base branch
+      - name: bump feature
         if: ${{ contains(github.event.head_commit.message, 'Merge pull request') && (
           contains(github.event.head_commit.message, 'feat/') ||
           contains(github.event.head_commit.message, 'feature/') ) &&
           !contains(github.event.head_commit.message, 'fix/')
           }}
-        run: |
-          echo "feature"
+        uses: jaumann/github-bumpversion-action@v0.0.7
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEFAULT_BUMP: minor
           
-      - name: print base branch
+      - name: bump default
         if: ${{ contains(github.event.head_commit.message, 'Merge pull request') &&
           !contains(github.event.head_commit.message, 'feat/') &&
           !contains(github.event.head_commit.message, 'feature/') &&
           !contains(github.event.head_commit.message, 'fix/')
           }}
-        run: |
-          echo "I don't know"      
+        uses: jaumann/github-bumpversion-action@v0.0.7
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          tags: true
 
       # Runs a single command using the runners shell
       #- name: Run a one-line script
