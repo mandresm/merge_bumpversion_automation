@@ -81,11 +81,11 @@ jobs:
           echo $GITHUB_ACTOR
         
       - name: push changes
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.BOT_TOKEN }}
-          tags: true
-          branch: release
+        run: |
+          git config --global user.email "esmtools.bot@gmail.com";
+          git config --global user.name "esmtools-bot";
+          git push;
+          git push --tags
           
       - name: perform merge
         if: ${{ contains(github.event.head_commit.message, 'Merge pull request') }}
