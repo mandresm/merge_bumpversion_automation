@@ -78,8 +78,7 @@ jobs:
 
       - name: change author
         run: |
-          #git commit --amend --author "esmtools-bot <esmtools.bot@gmail.com>";
-          git log; git bame
+          git log; git blame
           echo $GITHUB_ACTOR
         
       - name: push changes
