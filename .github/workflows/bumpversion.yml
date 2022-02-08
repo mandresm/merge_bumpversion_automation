@@ -77,7 +77,7 @@ jobs:
 
       - name: change author
         run: |
-          git log; git blame
+          git log -n 3;
           echo $GITHUB_ACTOR
         
       - name: push changes
