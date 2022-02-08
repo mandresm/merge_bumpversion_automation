@@ -72,8 +72,8 @@ jobs:
 
       - name: push changes
         run: |
-          git config --global user.email "${GITHUB_ACTOR}";
-          git config --global user.name "${GITHUB_ACTOR}@users.noreply.github.com";
+          git config --global user.email "esmtools-bot";
+          git config --global user.name "esmtools-bot@users.noreply.github.com";
           git push;
           git push --tags:
           
