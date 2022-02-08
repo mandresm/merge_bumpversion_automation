@@ -75,6 +75,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  
 
+      - name: debugging
+        run: git log; git blame
+        
       - name: push changes
         run: |
           git push;
