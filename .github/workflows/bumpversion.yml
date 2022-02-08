@@ -74,6 +74,7 @@ jobs:
         run: |
           git config --global user.email "esmtools.bot@gmail.com";
           git config --global user.name "esmtools-bot";
+          git checkout release;
           git push;
           git push --tags:
           
