@@ -38,10 +38,10 @@ jobs:
         with:
           fetch-depth: 0
           
-      - name: setup bot user
-        run: |
-          git config --global user.email "esmtools.bot@gmail.com";
-          git config --global user.name "esmtools-bot"
+      #- name: setup bot user
+      #  run: |
+      #    git config --global user.email "esmtools.bot@gmail.com";
+      #    git config --global user.name "esmtools-bot"
           
       - name: bump patch
         if: ${{ contains(github.event.head_commit.message, 'Merge pull request') && 
@@ -75,8 +75,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  
 
-      - name: debugging
-        run: git log; git blame
+      - name: change author
+        run: |
+          git commit --amend --author "esmtools-bot <esmtools.bot@gmail.com>";
+          git log; git bame
         
       - name: push changes
         run: |
