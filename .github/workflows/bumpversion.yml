@@ -1,14 +1,24 @@
-# This is a basic workflow to help you get started with Actions
+# ESM-Tools merge automation
+# ==========================
+# After a pull request is merged, the following steps are triggered:
+#   1. Bumpversion on the release branch
+#      - if the origin branch name contains "hotfix/" or "fix/" it does "bumpversion patch"
+#      - if the origin branch name contains "feature/" or "feat/" it does "bumpversion minor"
+#      - if the origin branch name contains none of the above runs "bumpversion patch" by default
+#      - if "#patch", "#minor" or "#major" are included in any commit message of the PR, and none
+#        of the above complies, then it uses the specified tag for the version bumping
+#   2. Merges "release" into "develop".
+#
+# Note: the version bumping runs ONLY for pull-requests, pushes direcly on the release branch without
+# pull-requests will not trigger version bumping.
 
-name: bumpversion
+name: merge automation
 
 # Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the main branch
+  # Triggers the workflow on push release branch
   push:
-    branches: [ main ]
-  #pull_request:
-  #  branches: [ main ]
+    branches: [ release ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -73,8 +83,8 @@ jobs:
           git config --global user.name "${GITHUB_ACTOR}@users.noreply.github.com";
           git status;
           git pull;
-          git checkout main;
+          git checkout release;
           git pull;
           git checkout develop;
-          git merge origin/main;
+          git merge origin/release;
           git push
