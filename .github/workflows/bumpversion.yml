@@ -51,7 +51,7 @@ jobs:
           }}
         uses: mandresm/github-bumpversion-action@master
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.BOT_TOKEN }}
           DEFAULT_BUMP: patch
 
       - name: bump feature
@@ -62,7 +62,7 @@ jobs:
           }}
         uses: mandresm/github-bumpversion-action@master
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.BOT_TOKEN }}
           DEFAULT_BUMP: minor
           
       - name: bump default
@@ -73,7 +73,7 @@ jobs:
           }}
         uses: mandresm/github-bumpversion-action@master
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  
+          GITHUB_TOKEN: ${{ secrets.BOT_TOKEN }}  
 
       - name: change author
         run: |
