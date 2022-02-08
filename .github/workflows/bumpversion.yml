@@ -49,7 +49,7 @@ jobs:
           !contains(github.event.head_commit.message, 'feat/') &&
           !contains(github.event.head_commit.message, 'feature/')
           }}
-        uses: mandresm/github-bumpversion-action@v0.0.7
+        uses: mandresm/github-bumpversion-action@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEFAULT_BUMP: patch
@@ -60,7 +60,7 @@ jobs:
           contains(github.event.head_commit.message, 'feature/') ) &&
           !contains(github.event.head_commit.message, 'fix/')
           }}
-        uses: mandresm/github-bumpversion-action@v0.0.7
+        uses: mandresm/github-bumpversion-action@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEFAULT_BUMP: minor
@@ -71,7 +71,7 @@ jobs:
           !contains(github.event.head_commit.message, 'feature/') &&
           !contains(github.event.head_commit.message, 'fix/')
           }}
-        uses: mandresm/github-bumpversion-action@v0.0.7
+        uses: mandresm/github-bumpversion-action@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  
 
