@@ -53,7 +53,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEFAULT_BUMP: patch
-          GITHUB_ACTOR: "esmtools-bot <esmtools.bot@gmail.com>"
 
       - name: bump feature
         if: ${{ contains(github.event.head_commit.message, 'Merge pull request') && (
@@ -78,6 +77,8 @@ jobs:
 
       - name: change author
         run: |
+          rm .git/COMMIT_EDITMSG;
+          git commit --amend --author "esmtools-bot <esmtools.bot@gmail.com>";
           git log; git blame
           echo $GITHUB_ACTOR
         
