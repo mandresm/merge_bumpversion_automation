@@ -38,6 +38,11 @@ jobs:
         with:
           fetch-depth: 0
           
+      - name: setup bot user
+        run: |
+          git config --global user.email "esmtools.bot@gmail.com";
+          git config --global user.name "esmtools-bot"
+          
       - name: bump patch
         if: ${{ contains(github.event.head_commit.message, 'Merge pull request') && 
           contains(github.event.head_commit.message, 'fix/') &&
@@ -72,17 +77,12 @@ jobs:
 
       - name: push changes
         run: |
-          git config --global user.email "esmtools.bot@gmail.com";
-          git config --global user.name "esmtools-bot";
-          git checkout release;
           git push;
           git push --tags:
           
       - name: perform merge
         if: ${{ contains(github.event.head_commit.message, 'Merge pull request') }}
         run: |
-          git config --global user.email "esmtools.bot@gmail.com";
-          git config --global user.name "esmtools-bot";
           git status;
           git pull;
           git checkout release;
