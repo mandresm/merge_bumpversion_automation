@@ -38,20 +38,15 @@ jobs:
         with:
           fetch-depth: 0
           
-      #- name: setup bot user
-      #  run: |
-      #    git config --global user.email "esmtools.bot@gmail.com";
-      #    git config --global user.name "esmtools-bot"
-          
       - name: bump patch
         if: ${{ contains(github.event.head_commit.message, 'Merge pull request') && 
           contains(github.event.head_commit.message, 'fix/') &&
           !contains(github.event.head_commit.message, 'feat/') &&
           !contains(github.event.head_commit.message, 'feature/')
           }}
-        uses: mandresm/github-bumpversion-action@master
+        uses: jaumann/github-bumpversion-action@v0.0.7
         env:
-          GITHUB_TOKEN: ${{ secrets.BOT_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEFAULT_BUMP: patch
 
       - name: bump feature
@@ -60,9 +55,9 @@ jobs:
           contains(github.event.head_commit.message, 'feature/') ) &&
           !contains(github.event.head_commit.message, 'fix/')
           }}
-        uses: mandresm/github-bumpversion-action@master
+        uses: jaumann/github-bumpversion-action@v0.0.7
         env:
-          GITHUB_TOKEN: ${{ secrets.BOT_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEFAULT_BUMP: minor
           
       - name: bump default
@@ -71,25 +66,21 @@ jobs:
           !contains(github.event.head_commit.message, 'feature/') &&
           !contains(github.event.head_commit.message, 'fix/')
           }}
-        uses: mandresm/github-bumpversion-action@master
+        uses: jaumann/github-bumpversion-action@v0.0.7
         env:
-          GITHUB_TOKEN: ${{ secrets.BOT_TOKEN }}  
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  
 
-      - name: change author
-        run: |
-          git log -n 3;
-          echo $GITHUB_ACTOR
-        
       - name: push changes
-        run: |
-          git config --global user.email "esmtools.bot@gmail.com";
-          git config --global user.name "esmtools-bot";
-          git push;
-          git push --tags
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          tags: true
           
       - name: perform merge
         if: ${{ contains(github.event.head_commit.message, 'Merge pull request') }}
         run: |
+          git config --global user.email "${GITHUB_ACTOR}";
+          git config --global user.name "${GITHUB_ACTOR}@users.noreply.github.com";
           git status;
           git pull;
           git checkout release;
