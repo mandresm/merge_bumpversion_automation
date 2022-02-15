@@ -75,7 +75,7 @@ jobs:
           !contains(github.event.head_commit.message, 'feat/') &&
           !contains(github.event.head_commit.message, 'feature/')
           }}
-        uses: mandresm/github-bumpversion-action@master
+        uses: jaumann/github-bumpversion-action@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEFAULT_BUMP: patch
@@ -86,7 +86,7 @@ jobs:
           contains(github.event.head_commit.message, 'feature/') ) &&
           !contains(github.event.head_commit.message, 'fix/')
           }}
-        uses: mandresm/github-bumpversion-action@master
+        uses: jaumann/github-bumpversion-action@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEFAULT_BUMP: minor
@@ -97,7 +97,7 @@ jobs:
           !contains(github.event.head_commit.message, 'feature/') &&
           !contains(github.event.head_commit.message, 'fix/')
           }}
-        uses: mandresm/github-bumpversion-action@master
+        uses: jaumann/github-bumpversion-action@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  
 
@@ -106,11 +106,17 @@ jobs:
 #          git log -n 3;
 #          echo $GITHUB_ACTOR
         
-      - name: push changes
-        run: |
-          git push;
-          git push --tags
-          
+#      - name: push changes
+#        run: |
+#          git push;
+#          git push --tags
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          tags: true
+
 #      - name: perform merge
 #        if: ${{ contains(github.event.head_commit.message, 'Merge pull request') }}
 #        run: |
