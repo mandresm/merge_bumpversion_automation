@@ -50,9 +50,10 @@ jobs:
           fetch-depth: 0
           
       - name: just print info
-        run: git status; echo "${GITHUB_REF}"
+        run: git status; echo "${SOMETHING}"
         env:
           DEFAULT_BRANCH: ${{ github.event.issue.pull_request.head_ref }}
+          SOMETHING: ${{ github.event.issue.pull_request }}
           
 #      - name: bump patch
 #        if: ${{ contains(github.event.head_commit.message, 'Merge pull request') && 
