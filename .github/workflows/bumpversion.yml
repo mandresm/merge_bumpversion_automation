@@ -39,63 +39,91 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
         with:
-          ref: release
+          fetch-depth: 0
           
-      - name: cherry pick last bump from release
-        run: git status
+      #- name: cherry pick last bump from release
+      #  run: |
+      #    git log -n 3 --grep="Bump version\:"
+      #    git status;
+      #    git log -n 1 -g --grep="Bump version\:" --pretty=format:"%h";
+      #    ID_LAST_BUMP=$(git log -n 1 -g --grep="Bump version\:" --pretty=format:"%h");
+      #    echo $ID_LAST_BUMP
         
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
           
-      - name: just print info
-        run: git status
+      - name: set user
+        run: |
+          git config --global user.name "${GITHUB_ACTOR}";
+          git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
           
-#      - name: bump patch
-#        if: ${{ contains(github.event.head_commit.message, 'Merge pull request') && 
-#          contains(github.event.head_commit.message, 'fix/') &&
-#          !contains(github.event.head_commit.message, 'feat/') &&
-#          !contains(github.event.head_commit.message, 'feature/')
-#          }}
-#        uses: mandresm/github-bumpversion-action@master
-#        env:
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#          DEFAULT_BUMP: patch
+      - name: checkout PR origin branch
+        run: |
+          PR_URL="${{ github.event.issue.pull_request.url }}";
+          PR_NUM=${PR_URL##*/}; echo "$PR_URL and $PR_NUM}"; 
+          hub pr checkout $PR_NUM;
+          git status
+        env:
+          DEFAULT_BRANCH: ${{ github.event.issue.pull_request.head_ref }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: merge release into this branch
+        run: |
+          git status
+          git merge release;
+          
+      - name: bump patch
+        if: ${{
+          contains(github.event.head_commit.message, 'fix/') &&
+          !contains(github.event.head_commit.message, 'feat/') &&
+          !contains(github.event.head_commit.message, 'feature/')
+          }}
+        uses: jaumann/github-bumpversion-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEFAULT_BUMP: patch
 
-#      - name: bump feature
-#        if: ${{ contains(github.event.head_commit.message, 'Merge pull request') && (
-#          contains(github.event.head_commit.message, 'feat/') ||
-#          contains(github.event.head_commit.message, 'feature/') ) &&
-#          !contains(github.event.head_commit.message, 'fix/')
-#          }}
-#        uses: mandresm/github-bumpversion-action@master
-#        env:
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#          DEFAULT_BUMP: minor
+      - name: bump feature
+        if: ${{
+          (
+            contains(github.event.head_commit.message, 'feat/') ||
+            contains(github.event.head_commit.message, 'feature/') 
+          ) &&
+          !contains(github.event.head_commit.message, 'fix/')
+          }}
+        uses: jaumann/github-bumpversion-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEFAULT_BUMP: minor
           
-#      - name: bump default
-#        if: ${{ contains(github.event.head_commit.message, 'Merge pull request') &&
-#          !contains(github.event.head_commit.message, 'feat/') &&
-#          !contains(github.event.head_commit.message, 'feature/') &&
-#          !contains(github.event.head_commit.message, 'fix/')
-#          }}
-#        uses: mandresm/github-bumpversion-action@master
-#        env:
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  
+      - name: bump default
+        if: ${{
+          !contains(github.event.head_commit.message, 'feat/') &&
+          !contains(github.event.head_commit.message, 'feature/') &&
+          !contains(github.event.head_commit.message, 'fix/')
+          }}
+        uses: jaumann/github-bumpversion-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  
 
 #      - name: change author
 #        run: |
 #          git log -n 3;
 #          echo $GITHUB_ACTOR
         
-#      - name: push changes
-#        run: |
-#          git config --global user.email "esmtools.bot@gmail.com";
-#          git config --global user.name "esmtools-bot";
-#          git push;
-#          git push --tags
-          
+      - name: push changes
+        run: |
+          git push;
+          git push --tags
+
+#      - name: Push changes
+#        uses: ad-m/github-push-action@master
+#        with:
+#          github_token: ${{ secrets.GITHUB_TOKEN }}
+#          tags: true
+
 #      - name: perform merge
 #        if: ${{ contains(github.event.head_commit.message, 'Merge pull request') }}
 #        run: |
