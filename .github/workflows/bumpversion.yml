@@ -53,6 +53,7 @@ jobs:
         run: PR_URL="${{ github.event.issue.pull_request.url }}"; PR_NUM=${PR_URL##*/}; echo "$PR_URL and $PR_NUM}"; hub pr checkout $PR_NUM; git status
         env:
           DEFAULT_BRANCH: ${{ github.event.issue.pull_request.head_ref }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           
 #      - name: bump patch
 #        if: ${{ contains(github.event.head_commit.message, 'Merge pull request') && 
