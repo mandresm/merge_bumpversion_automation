@@ -50,7 +50,7 @@ jobs:
           fetch-depth: 0
           
       - name: just print info
-        run: git status; echo "come on! ##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        run: git status; echo "${GITHUB_REF#refs/heads/}"
         env:
           DEFAULT_BRANCH: ${{ github.event.issue.pull_request.head_ref }}
           
