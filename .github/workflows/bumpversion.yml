@@ -69,6 +69,10 @@ jobs:
           DEFAULT_BRANCH: ${{ github.event.issue.pull_request.head_ref }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           
+      - name: Set current_branch var
+        id: vars
+        run: echo ::set-output name=current_branch::$(git rev-parse --abbrev-ref HEAD)
+          
       - name: merge release into this branch
         run: |
           git status
@@ -76,9 +80,9 @@ jobs:
           
       - name: bump patch
         if: ${{
-          contains(github.event.head_commit.message, 'fix/') &&
-          !contains(github.event.head_commit.message, 'feat/') &&
-          !contains(github.event.head_commit.message, 'feature/')
+          contains(steps.vars.outputs.current_branch, 'fix/') &&
+          !contains(steps.vars.outputs.current_branch, 'feat/') &&
+          !contains(steps.vars.outputs.current_branch, 'feature/')
           }}
         uses: jaumann/github-bumpversion-action@master
         env:
@@ -88,10 +92,10 @@ jobs:
       - name: bump feature
         if: ${{
           (
-            contains(github.event.head_commit.message, 'feat/') ||
-            contains(github.event.head_commit.message, 'feature/') 
+            contains(steps.vars.outputs.current_branch, 'feat/') ||
+            contains(steps.vars.outputs.current_branch, 'feature/') 
           ) &&
-          !contains(github.event.head_commit.message, 'fix/')
+          !contains(steps.vars.outputs.current_branch, 'fix/')
           }}
         uses: jaumann/github-bumpversion-action@master
         env:
@@ -100,9 +104,9 @@ jobs:
           
       - name: bump default
         if: ${{
-          !contains(github.event.head_commit.message, 'feat/') &&
-          !contains(github.event.head_commit.message, 'feature/') &&
-          !contains(github.event.head_commit.message, 'fix/')
+          !contains(steps.vars.outputs.current_branch, 'feat/') &&
+          !contains(steps.vars.outputs.current_branch, 'feature/') &&
+          !contains(steps.vars.outputs.current_branch, 'fix/')
           }}
         uses: jaumann/github-bumpversion-action@master
         env:
@@ -126,8 +130,7 @@ jobs:
 
       - name: merge into develop
         run: |
-          CURRENT_BRANCH=$(git branch --show-current)
-          echo $CURRENT_BRANCH;
+          echo ${{ steps.vars.outputs.current_branch }};
           git checkout develop;
           git merge $CURRENT_BRANCH;
           git push
