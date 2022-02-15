@@ -39,7 +39,7 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
         with:
-          ref: release
+          fetch-depth: 0
           
       - name: cherry pick last bump from release
         run: git status
@@ -49,11 +49,18 @@ jobs:
         with:
           fetch-depth: 0
           
-      - name: just print info
-        run: PR_URL="${{ github.event.issue.pull_request.url }}"; PR_NUM=${PR_URL##*/}; echo "$PR_URL and $PR_NUM}"; hub pr checkout $PR_NUM; git status
+      - name: checkout PR origin branch
+        run: |
+          PR_URL="${{ github.event.issue.pull_request.url }}";
+          PR_NUM=${PR_URL##*/}; echo "$PR_URL and $PR_NUM}"; 
+          hub pr checkout $PR_NUM;
+          git status
         env:
           DEFAULT_BRANCH: ${{ github.event.issue.pull_request.head_ref }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: print
+        run: git status
           
 #      - name: bump patch
 #        if: ${{ contains(github.event.head_commit.message, 'Merge pull request') && 
