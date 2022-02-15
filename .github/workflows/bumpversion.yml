@@ -124,13 +124,10 @@ jobs:
 #          github_token: ${{ secrets.GITHUB_TOKEN }}
 #          tags: true
 
-#      - name: perform merge
-#        if: ${{ contains(github.event.head_commit.message, 'Merge pull request') }}
-#        run: |
-#          git status;
-#          git pull;
-#          git checkout release;
-#          git pull;
-#          git checkout develop;
-#          git merge origin/release;
-#          git push
+      - name: merge into develop
+        run: |
+          CURRENT_BRANCH=$(git branch --show-current)
+          echo $CURRENT_BRANCH;
+          git checkout develop;
+          git merge $CURRENT_BRANCH;
+          git push
