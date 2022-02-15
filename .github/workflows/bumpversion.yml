@@ -132,5 +132,5 @@ jobs:
         run: |
           echo ${{ steps.vars.outputs.current_branch }};
           git checkout develop;
-          git merge $CURRENT_BRANCH;
+          git merge ${{ steps.vars.outputs.current_branch }};
           git push
