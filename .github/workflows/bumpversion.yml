@@ -50,7 +50,7 @@ jobs:
           fetch-depth: 0
           
       - name: just print info
-        run: git status; echo "${GITHUB_HEAD_REF}"
+        run: git status; echo "${GITHUB_REF}"
         env:
           DEFAULT_BRANCH: ${{ github.event.issue.pull_request.head_ref }}
           
