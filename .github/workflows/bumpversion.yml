@@ -75,7 +75,7 @@ jobs:
           git merge release;
           
       - name: bump patch
-        if: ${{ contains(github.event.head_commit.message, 'Merge pull request') && 
+        if: ${{
           contains(github.event.head_commit.message, 'fix/') &&
           !contains(github.event.head_commit.message, 'feat/') &&
           !contains(github.event.head_commit.message, 'feature/')
@@ -86,9 +86,11 @@ jobs:
           DEFAULT_BUMP: patch
 
       - name: bump feature
-        if: ${{ contains(github.event.head_commit.message, 'Merge pull request') && (
-          contains(github.event.head_commit.message, 'feat/') ||
-          contains(github.event.head_commit.message, 'feature/') ) &&
+        if: ${{
+          (
+            contains(github.event.head_commit.message, 'feat/') ||
+            contains(github.event.head_commit.message, 'feature/') 
+          ) &&
           !contains(github.event.head_commit.message, 'fix/')
           }}
         uses: jaumann/github-bumpversion-action@master
@@ -97,7 +99,7 @@ jobs:
           DEFAULT_BUMP: minor
           
       - name: bump default
-        if: ${{ contains(github.event.head_commit.message, 'Merge pull request') &&
+        if: ${{
           !contains(github.event.head_commit.message, 'feat/') &&
           !contains(github.event.head_commit.message, 'feature/') &&
           !contains(github.event.head_commit.message, 'fix/')
@@ -111,16 +113,16 @@ jobs:
 #          git log -n 3;
 #          echo $GITHUB_ACTOR
         
-#      - name: push changes
-#        run: |
-#          git push;
-#          git push --tags
+      - name: push changes
+        run: |
+          git push;
+          git push --tags
 
-      - name: Push changes
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          tags: true
+#      - name: Push changes
+#        uses: ad-m/github-push-action@master
+#        with:
+#          github_token: ${{ secrets.GITHUB_TOKEN }}
+#          tags: true
 
 #      - name: perform merge
 #        if: ${{ contains(github.event.head_commit.message, 'Merge pull request') }}
