@@ -43,8 +43,7 @@ jobs:
           
       - name: cherry pick last bump from release
         run: |
-          git config --global user.email "esmtools.bot@gmail.com";
-          git config --global user.name "esmtools-bot";
+          git log -n 3
           git status;
           git log -n 1 -g --grep="Bump version\:" --pretty=format:"%h";
           ID_LAST_BUMP=$(git log -n 1 -g --grep="Bump version\:" --pretty=format:"%h");
