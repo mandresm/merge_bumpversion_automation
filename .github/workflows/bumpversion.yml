@@ -50,7 +50,9 @@ jobs:
           fetch-depth: 0
           
       - name: just print info
-        run: git status; echo "$DEFAULT_BRANCH"
+        run: git status; echo "come on! $DEFAULT_BRANCH"
+        env:
+          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
           
 #      - name: bump patch
 #        if: ${{ contains(github.event.head_commit.message, 'Merge pull request') && 
