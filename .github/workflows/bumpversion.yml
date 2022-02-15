@@ -54,6 +54,11 @@ jobs:
         with:
           fetch-depth: 0
           
+      - name: set user
+        run: |
+          git config --global user.email "esmtools.bot@gmail.com";
+          git config --global user.name "esmtools-bot"
+          
       - name: checkout PR origin branch
         run: |
           PR_URL="${{ github.event.issue.pull_request.url }}";
