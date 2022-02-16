@@ -66,7 +66,10 @@ jobs:
       # Bumping if `hotfix/` or `fix/` is part of the branch's name (patch)
       - name: bump patch
         if: ${{
-          contains(steps.vars.outputs.current_branch, 'fix/') &&
+          (
+            contains(steps.vars.outputs.current_branch, 'fix/') ||
+            contains(github.event.comment.body, '#patch')
+          ) &&
           !contains(steps.vars.outputs.current_branch, 'feat/') &&
           !contains(steps.vars.outputs.current_branch, 'feature/')
           }}
@@ -80,7 +83,8 @@ jobs:
         if: ${{
           (
             contains(steps.vars.outputs.current_branch, 'feat/') ||
-            contains(steps.vars.outputs.current_branch, 'feature/') 
+            contains(steps.vars.outputs.current_branch, 'feature/') ||
+            contains(github.event.comment.body, '#minor')
           ) &&
           !contains(steps.vars.outputs.current_branch, 'fix/')
           }}
@@ -88,13 +92,27 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEFAULT_BUMP: minor
+          
+      # Bumping if `feature/` or `feat/` is part of the branch's name (major)
+      - name: bump major
+        if: ${{
+          contains(github.event.comment.body, '#major') &&
+          !contains(steps.vars.outputs.current_branch, 'fix/') &&
+          !contains(steps.vars.outputs.current_branch, 'feat/') &&
+          !contains(steps.vars.outputs.current_branch, 'feature/')
+          }}
+        uses: jaumann/github-bumpversion-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEFAULT_BUMP: major
       
       # Default bumping (patch unless #minor or #major is used in a comment of the PR)
       - name: bump default
         if: ${{
           !contains(steps.vars.outputs.current_branch, 'feat/') &&
           !contains(steps.vars.outputs.current_branch, 'feature/') &&
-          !contains(steps.vars.outputs.current_branch, 'fix/')
+          !contains(steps.vars.outputs.current_branch, 'fix/') &&
+          !contains(github.event.comment.body, '#major')
           }}
         uses: jaumann/github-bumpversion-action@master
         env:
