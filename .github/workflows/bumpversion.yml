@@ -131,3 +131,5 @@ jobs:
           git checkout develop;
           git merge ${{ steps.vars.outputs.current_branch }};
           git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  
