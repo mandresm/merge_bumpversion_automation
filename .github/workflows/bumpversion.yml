@@ -27,9 +27,12 @@ jobs:
 
     # Sequence of tasks that will be executed as part of the job
     steps:
-      
+    
+      - name: work around permission issue
+        run: git config --global --add safe.directory /github/workspace
+        
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it (`release` branch)
-      - uses: actions/checkout@v3.0.2
+      - uses: actions/checkout@v2
         with:
           fetch-depth: 0
           
