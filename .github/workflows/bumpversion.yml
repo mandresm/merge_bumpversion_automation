@@ -29,7 +29,7 @@ jobs:
     steps:
       
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it (`release` branch)
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3.0.2
         with:
           fetch-depth: 0
           
@@ -38,7 +38,6 @@ jobs:
         run: |
           git config --global user.name "${GITHUB_ACTOR}";
           git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
-          git config --global --add safe.directory /github/workspace
 
       # Checkout PR-branch (I could not find an easier way to do this and it seems
       # many people are struggling with the same problem when your event is triggered
