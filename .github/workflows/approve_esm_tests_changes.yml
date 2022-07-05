@@ -12,6 +12,10 @@ on:
   issue_comment:
     types: [created]
 
+  
+  # Run this workflow ONLY if the `issue_comment` is in a pull-request and the comment text contains `#approve-changes`
+  if: ${{ github.event.issue.pull_request && contains(github.event.comment.body, '#approve-changes') }}
+    
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
@@ -22,17 +26,8 @@ jobs:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
-    # Run this workflow ONLY if the `issue_comment` is in a pull-request and the comment text contains `#approve-changes`
-    if: ${{ github.event.issue.pull_request && contains(github.event.comment.body, '#approve-changes') }}
-
     # Sequence of tasks that will be executed as part of the job
     steps:
-    
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it (`release` branch)
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-    
       - name: ollie
         uses: ./.github/workflows/esm_tests_computer_workflow.yml
         with:
