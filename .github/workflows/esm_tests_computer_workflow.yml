@@ -1,0 +1,33 @@
+# ESM-Tests generalized workflow for computers
+# ============================================
+
+name: esm_tests_computer_workflow
+
+# Called from other workflows
+on:
+  workflow_call:
+    inputs:
+      computer:
+        required: true
+        type: string
+      update_esm_tests_info:
+        type: boolean
+        default: false
+      test_flags:
+        type: string
+        default: "-cnge -s False"
+
+jobs:
+  computer:
+    name: ${{ inputs.computer }}
+    # Containers must run in Linux based operating systems
+    runs-on: ubuntu-latest
+    # Docker Hub image that `container-job` executes in
+
+    steps:
+    # NK: this changes working directory to fesom2
+    
+    - name: dummy action
+      run: |
+        echo "hello world! "
+        
