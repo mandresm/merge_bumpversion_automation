@@ -11,15 +11,14 @@ name: approve esm_tests changes
 on:
   issue_comment:
     types: [created]
-
-  
-  # Run this workflow ONLY if the `issue_comment` is in a pull-request and the comment text contains `#approve-changes`
-  if: ${{ github.event.issue.pull_request && contains(github.event.comment.body, '#approve-changes') }}
     
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
 jobs:
+  # Run this workflow ONLY if the `issue_comment` is in a pull-request and the comment text contains `#approve-changes`
+  if: ${{ github.event.issue.pull_request && contains(github.event.comment.body, '#approve-changes') }}
+
   # This workflow contains a single job called "bump_and_merge2dev"
   update_esm_tests_info:
 
