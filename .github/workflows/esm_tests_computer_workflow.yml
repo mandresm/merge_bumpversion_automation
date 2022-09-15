@@ -30,7 +30,8 @@ jobs:
     - name: dummy action
       run: |
         mkdir output;
-        date >  output/date.md"
+        date >  output/date.md;
+        cat output/date.md;"
     
     - name: commit changes in submodule
       if: contains(${{ inputs.test_flags }}, "-s True")
