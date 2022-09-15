@@ -30,4 +30,8 @@ jobs:
     - name: dummy action
       run: |
         echo "hello world! "
-        
+    
+    - name: commit changes in submodule
+      if: contains(${{ inputs.test_flags }}, "-s True")
+      run: echo "it's working!"
+      
