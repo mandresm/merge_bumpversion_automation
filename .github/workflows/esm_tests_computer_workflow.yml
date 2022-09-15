@@ -33,4 +33,5 @@ jobs:
     
     - name: commit changes in submodule
       if: contains(${{ inputs.test_flags }}, "-s True")
-      uses:  mandresm/merge_bumpversion_automation_submodule/.github/workflows/push_last_tested_changes.yml  
+      #uses:  mandresm/merge_bumpversion_automation_submodule/.github/workflows/push_last_tested_changes.yml
+      run: echo "this works"
