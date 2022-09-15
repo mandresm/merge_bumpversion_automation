@@ -33,5 +33,4 @@ jobs:
     
     - name: commit changes in submodule
       if: contains(${{ inputs.test_flags }}, "-s True")
-      run: echo "it's working!"
-      
+      uses:  mandresm/merge_bumpversion_automation_submodule    
